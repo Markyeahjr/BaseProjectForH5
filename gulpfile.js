@@ -1,7 +1,7 @@
 var app = {  // 定义目录
     srcPath:'src/bankList/',
-    buildPath:'build/',
-    distPath:'dist/'
+    buildPath:'build/bankList/',
+    distPath:'dist/bankList/'
 }
 
 /*1.引入gulp与gulp插件   使用时，要去下载这些插件*/
@@ -13,14 +13,18 @@ var concat = require('gulp-concat');
 var connect = require('gulp-connect');
 var imagemin = require('gulp-imagemin');
 var open = require('open');
+var postcss = require('gulp-postcss');
+var px2rem = require('postcss-px2rem');
 
 /*把bower下载的前端框架放到我们项目当中*/
 gulp.task('lib',function () {
     gulp.src('bower_components/common/*.js')
+        .pipe(gulp.dest(app.srcPath+'lib'))
         .pipe(gulp.dest(app.buildPath+'lib'))
         .pipe(gulp.dest(app.distPath+'lib'))
         .pipe(connect.reload()); //当内容发生改变时， 重新加载。
     gulp.src('bower_components/common/*.css')
+        .pipe(gulp.dest(app.srcPath+'lib'))
         .pipe(gulp.dest(app.buildPath+'lib'))
         .pipe(gulp.dest(app.distPath+'lib'))
         .pipe(connect.reload()); //当内容发生改变时， 重新加载。
@@ -37,6 +41,14 @@ gulp.task('html',function () {
         .pipe(connect.reload()); //当内容发生改变时， 重新加载。
 });
 /*3.执行任务 通过命令行。gulp 任务名称*/
+/*px转rem,暂不需要*/
+// gulp.task('pxtorem', function() {
+//     var processors = [px2rem({remUnit: 37.5})];
+//     return gulp.src('./src/*.css')
+//         .pipe(postcss(processors))
+//         .pipe(gulp.dest('./dest'));
+// });
+
 /*定义编译less任务  下载对应的插件 gulp-less
  * 把less文件转成css放到build
  * */

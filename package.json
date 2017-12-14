@@ -15,7 +15,9 @@
   },
   "devDependencies": {
     "connect-livereload": "^0.6.0",
-    "grunt-contrib-watch": "^1.0.0"
+    "grunt-contrib-watch": "^1.0.0",
+    "gulp-postcss": "^7.0.0",
+    "postcss-px2rem": "^0.3.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

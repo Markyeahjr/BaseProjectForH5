@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!--<meta name="viewport" content="width=375 user-scalable=no">-->
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <!-- 删除苹果默认的工具栏和菜单栏 -->
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <!-- 设置苹果工具栏颜色 -->
     <!-- 启用360浏览器的极速模式(webkit) -->
     <meta name="renderer" content="webkit">
@@ -24,16 +25,24 @@
     <meta name="x5-page-mode" content="app">
     <!-- windows phone 点击无高光 -->
     <meta name="msapplication-tap-highlight" content="no">
-    <meta content="yes" name="apple-mobile-web-app-capable">
-    <meta content="yes" name="apple-touch-fullscreen">
-    <meta content="telephone=no,email=no" name="format-detection">
-    <!--<meta name="viewport" content="width=device-width maximum-scale=1.0 minimum-scale=1.0 user-scalable=no">-->
+    <!-- 适应移动端end -->
     <title>title</title>
+    <style>
+        div {
+            font-size: 18px;
+        }
+        [data-dpr="2"] div {
+            font-size: 36px;
+        }
+        [data-dpr="3"] div {
+            font-size: 54px;
+        }
+    </style>
     <script src="lib/flexible.js"></script>
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-
+<div>sbsbsb</div>
 
 <script src="lib/zepto.js"></script>
 <script src="js/index.js"></script>
