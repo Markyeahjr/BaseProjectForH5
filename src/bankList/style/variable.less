@@ -52,8 +52,26 @@
   right:unit(@px/37.5,rem);
 }
 
+.bd(@size,@line,@color){
+  border: unit(@size/37.5,rem) @line @color;
+}
+.bdr(@size,@line,@color){
+  border-right: unit(@size/37.5,rem) @line @color;
+}
+.bdl(@size,@line,@color){
+  border-left: unit(@size/37.5,rem) @line @color;
+}
+.bdt(@size,@line,@color){
+  border-top: unit(@size/37.5,rem) @line @color;
+}
+.bdb(@size,@line,@color){
+  border-bottom: unit(@size/37.5,rem) @line @color;
+}
 .padding(@tb,@lr){
   padding: unit(@tb/37.5,rem) unit(@lr/37.5,rem);;
+}
+.margin(@tb,@lr){
+  margin: unit(@tb/37.5,rem) unit(@lr/37.5,rem);;
 }
 .fl{
   float: left;

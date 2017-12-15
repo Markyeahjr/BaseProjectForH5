@@ -26,24 +26,36 @@
     <!-- windows phone 点击无高光 -->
     <meta name="msapplication-tap-highlight" content="no">
     <!-- 适应移动端end -->
-    <title>title</title>
-    <style>
-        div {
-            font-size: 18px;
-        }
-        [data-dpr="2"] div {
-            font-size: 36px;
-        }
-        [data-dpr="3"] div {
-            font-size: 54px;
-        }
-    </style>
-    <script src="lib/flexible.js"></script>
+    <title>支持银行</title>
     <link rel="stylesheet" href="css/index.css">
+    <script src="lib/flexible.js"></script>
 </head>
 <body>
-<div>sbsbsb</div>
+<article class="container">
+    <table id="bankInfoList">
+        <tr>
+            <th class="bankname">银行名称</th>
+            <th class="deposit-card">储蓄卡</th>
+            <th class="credit-card">信用卡</th>
+        </tr>
+        <tr>
+            <td class="bankname">工商银行</td>
+            <td class="deposit-card"><img src="images/Support-icon.png"></td>
+            <td class="credit-card"><img src="images/noSupport-icon.png"></td>
+        </tr>
+        <tr>
+            <td class="bankname">吉林省农村信用社联合社</td>
+            <td class="deposit-card"><img src="images/Support-icon.png"></td>
+            <td class="credit-card"><img src="images/noSupport-icon.png"></td>
+        </tr>
+         <tr>
+            <td class="bankname">中国银行</td>
+            <td class="deposit-card"><img src="images/Support-icon.png"></td>
+            <td class="credit-card"><img src="images/noSupport-icon.png"></td>
+        </tr>
 
+    </table>
+</article>
 <script src="lib/zepto.js"></script>
 <script src="js/index.js"></script>
 </body>

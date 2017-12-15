@@ -4,52 +4,57 @@
 //flexible.js
 body{
   width: 10rem;
-  background-color: palegoldenrod;
+  margin: 0 auto;
 }
 
-//other
-body{
+.container {
+  .w(315);
+  .margin(0,30);
+  .pt(30);
+
+  table {
+    font-size: 13px;
+    .bd(1,solid,#DFE2E1);
+    border-collapse: collapse;
+    text-align: center;
+  }
+
+  tr {
+    .h(38);
+
+    td img {
+      .w(15)
+    }
+
+    th {
+      background-color: #F5F8F8;
+      font-weight: normal;
+    }
+
+    .bankname {
+      .w(104);
+      .padding(0,16)
+    }
+    .deposit-card {
+      .w(88)
+    }
+    .credit-card {
+      .w(88)
+    }
+  }
+
+  th+th, td+td{
+    .bdl(1,solid,#DFE2E1);
+  }
+  tr+tr {
+    .bdt(1,solid,#DFE2E1);
+  }
 }
 
-//.swiper-container{
-//    .w(375);
-//    .h(667);
-//
-//
-//
-//  .swiper-pagination {
-//    position: absolute;
-//    z-index: 20;
-//    bottom: 3%;
-//    width: 92%;
-//    padding-left: 8%;
-//    text-align: left;
-//  }
-//
-//  #s_wrapper .swiper-pagination>span{
-//    .w(6);
-//    .h(6);
-//    border-radius: 50%;
-//    .ml(3);
-//    .mr(3);
-//  }
-//
-//  .swiper-wrapper{
-//    .swiper-slide {
-//      -webkit-background-size: cover;
-//      background-size:cover;
-//
-//
-//      .guide-title{
-//        .fs(24);
-//        color: #fff;
-//      }
-//    }
-//  }
-//
-//}
-div {
-  width: 100%;
-  .h(50);
-  background-color: wheat;
+[data-dpr="2"] table {
+  font-size: 26px;
+}
+
+[data-dpr='3']  table {
+  font-size: 39px;
 }
