@@ -1,7 +1,7 @@
 var app = {  // 定义目录
-    srcPath:'src/bankList/',
-    buildPath:'build/bankList/',
-    distPath:'dist/bankList/'
+    srcPath:'src/myBank/',
+    buildPath:'build/myBank/',
+    distPath:'dist/myBank/'
 }
 
 /*1.引入gulp与gulp插件   使用时，要去下载这些插件*/

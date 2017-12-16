@@ -73,6 +73,12 @@
 .margin(@tb,@lr){
   margin: unit(@tb/37.5,rem) unit(@lr/37.5,rem);;
 }
+.shadow(@h-shadow,@v-shadow,@blur,@color){
+  box-shadow: unit(@h-shadow/37.5,rem) unit(@v-shadow/37.5,rem)  unit(@spread/37.5,rem) @color;
+}
+.rds(@size){
+  border-radius: unit(@size/37.5,rem);
+}
 .fl{
   float: left;
 }

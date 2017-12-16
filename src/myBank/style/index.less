@@ -1,0 +1,221 @@
+@import "normalize";
+@import "variable";
+
+//flexible.js
+body{
+  width: 10rem;
+  margin: 0 auto;
+}
+/****************共用样式********************/
+
+.container {
+  .w(345);
+  .padding(0,15);
+  .pt(30);
+  color: #fff;
+
+  ul {
+    position: relative;
+    top: 0;
+    left: 0;
+
+    li:nth-child(1) {
+      box-shadow: none;
+    }
+
+    li {
+      width: 100%;
+      .h(117);
+      .rds(10);
+      .padding(20,15);
+      -webkit-background-size: 100% 100%;
+      background-size: 100% 100%;
+      .shadow(0,-1,6,0,rgba(0, 0, 0, 0.25));
+      position: absolute;
+
+      .leftbox {
+         float: left;
+        .w(51);
+        height: 100%;
+
+        img {
+          .w(36);
+          .h(36);
+        }
+       }
+
+      .rightbox {
+        float: left;
+      }
+    }
+  }
+}
+
+
+.bankname {
+  font-size: 15px;
+  .lh(15);
+  .mb(10);
+}
+.pointer {
+  font-size: 15px;
+}
+[data-dpr="2"] .bankname, [data-dpr="2"] .pointer {
+  font-size: 30px;
+}
+[data-dpr="3"] .bankname, [data-dpr="3"] .pointer {
+  font-size: 45px;
+}
+
+.peoplename {
+  font-size: 12px;
+  .lh(12);
+  .mb(8);
+
+}
+[data-dpr="2"] .peoplename {
+  font-size: 24px;
+}
+[data-dpr="3"] .peoplename {
+  font-size: 36px;
+}
+
+.banknumber {
+  .lh(24);
+}
+.banknumber small{
+  font-size: 14px;
+  opacity: 0.4;
+  .mr(35)
+}
+[data-dpr="2"] .banknumber small{
+  font-size: 28px;
+}
+[data-dpr="3"] .banknumber small{
+  font-size: 42px;
+}
+.banknumber span{
+  font-size: 24px;
+}
+[data-dpr="2"] .banknumber span{
+  font-size: 48px;
+}
+[data-dpr="3"] .banknumber span{
+  font-size: 72px;
+}
+
+/****************完成状态********************/
+.finish {
+
+  li .pointer {
+    display: none;
+  }
+  .cur .ischoose {
+    display: block;
+  }
+  li .ischoose {
+    display: none;
+    .w(20);
+    .h(20);
+    position: absolute;
+    .right(15);
+    .top(20);
+    background: url('../images/choose.png') 0 0 no-repeat;
+    -webkit-background-size: cover;
+    background-size: cover;
+  }
+}
+
+/****************编辑状态********************/
+.edit {
+
+  li .pointer {
+    display: block;
+    .w(75);
+    .h(30);
+    .lh(30);
+    text-align: center;
+
+    position: absolute;
+    .right(15);
+    .top(20);
+    .rds(100);
+
+    .pointer span{
+      display: block;
+    }
+  }
+
+  //0.5px边框
+  li .pointer:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    .rds(100);
+    .bd(1,solid,#fff);
+    -webkit-transform-origin: 0 0;
+    -moz-transform-origin: 0 0;
+    -ms-transform-origin: 0 0;
+    -o-transform-origin: 0 0;
+    transform-origin: 0 0;
+    -webkit-transform: scale(0.5, 0.5);
+    -ms-transform: scale(0.5, 0.5);
+    -o-transform: scale(0.5, 0.5);
+    transform: scale(0.5, 0.5);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  li .pointer span{
+    display: block;
+  }
+
+  //按下的样式
+  .cur  {
+    background-color: #00B99E;
+  }
+  .cur:before {
+    display: none;
+  }
+}
+
+/****************底部添加卡片********************/
+
+footer {
+  display: block;
+  width: 100%;
+  .h(64);
+  background-color: #fff;
+  .shadow(0,-1,4,0,#eee);
+  .pt(11);
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+
+  div {
+    color: white;
+    font-size: 18px;
+    .w(329);
+    .h(42);
+    .lh(42);
+    margin: 0 auto;
+    background-image: linear-gradient(-90deg, #00B99E  0%, #65CFB7 100%);
+    .rds(100);
+    text-align: center;
+  }
+
+}
+[data-dpr="2"] footer div{
+  font-size: 36px;
+}
+[data-dpr="3"] footer div{
+  font-size: 54px;
+}
+
+.edit footer{
+  display: none;
+}

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--<meta name="viewport" content="width=375 user-scalable=no">-->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- 删除苹果默认的工具栏和菜单栏 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!-- 设置苹果工具栏颜色 -->
+    <!-- 启用360浏览器的极速模式(webkit) -->
+    <meta name="renderer" content="webkit">
+    <!-- 避免IE使用兼容模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->
+    <meta name="HandheldFriendly" content="true">
+    <!-- 微软的老式浏览器 -->
+    <meta name="MobileOptimized" content="320">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+    <!-- UC应用模式 -->
+    <meta name="browsermode" content="application">
+    <!-- QQ应用模式 -->
+    <meta name="x5-page-mode" content="app">
+    <!-- windows phone 点击无高光 -->
+    <meta name="msapplication-tap-highlight" content="no">
+    <!-- 适应移动端end -->
+    <title>我的银行</title>
+    <link rel="stylesheet" href="css/index.css">
+    <script src="lib/flexible.js"></script>
+</head>
+<body>
+<article id="container" class="container finish">
+    <ul id="bankCardList">
+        <!--<li class="cur">-->
+            <!--<div class="leftbox">-->
+                <!--<img src="images/paycard_icon_ICBC.png">-->
+            <!--</div>-->
+            <!--<div class="rightbox">-->
+                <!--<div class="bankname">工商银行储蓄卡</div>-->
+                <!--<p class="peoplename">**宇</p>-->
+                <!--<div class="banknumber">-->
+                    <!--<small>****</small>-->
+                    <!--<small>****</small>-->
+                    <!--<small>****</small>-->
+                    <!--<span>3847</span>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="pointer">-->
+                <!--<span>删除</span>-->
+            <!--</div>-->
+        <!--</li>-->
+    </ul>
+    <footer>
+        <div id="addNewCard">
+            添加新卡支付
+        </div>
+    </footer>
+</article>
+<button id="edit" style="position:fixed; top: 0;font-size: 0.5rem">编辑</button>
+
+<script src="lib/zepto.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>
