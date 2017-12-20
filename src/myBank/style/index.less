@@ -53,56 +53,32 @@ body{
 
 
 .bankname {
-  font-size: 15px;
+  .fs(15);
+
   .lh(15);
   .mb(10);
 }
 .pointer {
-  font-size: 15px;
-}
-[data-dpr="2"] .bankname, [data-dpr="2"] .pointer {
-  font-size: 30px;
-}
-[data-dpr="3"] .bankname, [data-dpr="3"] .pointer {
-  font-size: 45px;
+  .fs(14);
 }
 
+
 .peoplename {
-  font-size: 12px;
+  .fs(12);
   .lh(12);
   .mb(8);
 
-}
-[data-dpr="2"] .peoplename {
-  font-size: 24px;
-}
-[data-dpr="3"] .peoplename {
-  font-size: 36px;
 }
 
 .banknumber {
   .lh(24);
 }
 .banknumber small{
-  font-size: 14px;
+  .fs(14);
   opacity: 0.4;
   .mr(35)
 }
-[data-dpr="2"] .banknumber small{
-  font-size: 28px;
-}
-[data-dpr="3"] .banknumber small{
-  font-size: 42px;
-}
-.banknumber span{
-  font-size: 24px;
-}
-[data-dpr="2"] .banknumber span{
-  font-size: 48px;
-}
-[data-dpr="3"] .banknumber span{
-  font-size: 72px;
-}
+
 
 /****************完成状态********************/
 .finish {
@@ -198,7 +174,7 @@ footer {
 
   div {
     color: white;
-    font-size: 18px;
+    .fs(18);
     .w(329);
     .h(42);
     .lh(42);
@@ -209,12 +185,7 @@ footer {
   }
 
 }
-[data-dpr="2"] footer div{
-  font-size: 36px;
-}
-[data-dpr="3"] footer div{
-  font-size: 54px;
-}
+
 
 .edit footer{
   display: none;

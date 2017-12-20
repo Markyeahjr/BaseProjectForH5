@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--<meta name="viewport" content="width=375 user-scalable=no">-->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- 删除苹果默认的工具栏和菜单栏 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!-- 设置苹果工具栏颜色 -->
+    <!-- 启用360浏览器的极速模式(webkit) -->
+    <meta name="renderer" content="webkit">
+    <!-- 避免IE使用兼容模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->
+    <meta name="HandheldFriendly" content="true">
+    <!-- 微软的老式浏览器 -->
+    <meta name="MobileOptimized" content="320">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+    <!-- UC应用模式 -->
+    <meta name="browsermode" content="application">
+    <!-- QQ应用模式 -->
+    <meta name="x5-page-mode" content="app">
+    <!-- windows phone 点击无高光 -->
+    <meta name="msapplication-tap-highlight" content="no">
+    <!-- 适应移动端end -->
+    <title></title>
+    <link rel="stylesheet" href="css/index.css">
+    <script src="lib/flexible.js"></script>
+</head>
+<body>
+<article id="container" class="container">
+    <header id="orderInfo">
+        <p>支付金额</p>
+        <h4></h4>
+        <div id="isWarp"></div>
+        <span></span>
+    </header>
+    <section id="notBindCard" class="notbindcard">
+        <div class="tab tab-switch">
+            <span class="cur">储蓄卡</span>
+            <span>信用卡</span>
+        </div>
+        <div class="tab tab-alone">仅支持储蓄卡</div>
+        <div class="tab tab-content cur-content">
+            <form id="depositCardForm" onsubmit="return false;">
+                <ul>
+                    <li class="clearfix cell cur">
+                        <label>银行卡</label>
+                        <input type="number" name="bankNumber" placeholder="请输入本人的银行卡" required>
+                    </li>
+                    <li class="clearfix cell">
+                        <label>持卡人</label>
+                        <input type="text" name="cardName" placeholder="请输入持卡人姓名" required>
+                    </li>
+                    <li class="clearfix cell">
+                        <label>身份证</label>
+                        <input type="text" name="cardId" placeholder="请输入持卡人身份证号"
+                               onkeyup="value=value.toUpperCase().replace(/[^0-9\X]/g,'')" required>
+                    </li>
+                    <li class="clearfix cell">
+                        <label>手机号</label>
+                        <input type="number" name="phone" placeholder="请输入银行卡预留手机号" required>
+                    </li>
+                    <li class="clearfix cell verify">
+                        <label>验证码</label>
+                        <input type="number" placeholder="请输入短信验证码">
+                        <button class="btn getverify" disabled>获取验证码</button>
+                    </li>
+                </ul>
+            </form>
+        </div>
+        <div class="tab tab-content">
+            <form id="creditCardForm" onsubmit="return false;">
+                <ul>
+                    <li class="clearfix cell cur">
+                        <label>银行卡</label>
+                        <input type="number" name="bankNumber" placeholder="请输入本人的银行卡" required>
+                    </li>
+                    <li class="clearfix cell">
+                        <label>持卡人</label>
+                        <input type="text" name="cardName" placeholder="请输入持卡人姓名" required>
+                    </li>
+                    <li class="clearfix cell">
+                        <label>身份证</label>
+                        <input type="text" name="cardId" placeholder="请输入持卡人身份证号"
+                               onkeyup="value=value.toUpperCase().replace(/[^0-9\X]/g,'')" required>
+                    </li>
+                    <li class="clearfix cell">
+                        <label>手机号</label>
+                        <input type="number" name="phone" placeholder="请输入银行卡预留手机号" required>
+                    </li>
+
+                    <li class="clearfix cell creditcard endtime">
+                        <label>有效期</label>
+                        <input type="text" name="endTime" maxlength="5" placeholder="月份/年份，如09/20" required>
+                        <span class="deadline"></span>
+                    </li>
+                    <li class="clearfix cell creditcard cvv">
+                        <label>CVV</label>
+                        <input type="number" name="CVV" placeholder="卡片背后的末三位数字" required>
+                        <span class="cvv"></span>
+                    </li>
+                    <li class="clearfix cell verify">
+                        <label>验证码</label>
+                        <input type="number" placeholder="请输入短信验证码">
+                        <button class="btn getverify" disabled>获取验证码</button>
+                    </li>
+                </ul>
+            </form>
+        </div>
+
+    </section>
+    <section class="bindcard">
+        <form id="bindCardForm" onsubmit="return false;">
+
+            <div id="card" class="card">
+                <!--<div class="leftbox">-->
+                    <!--<img src="images/paycard_icon_ICBC.png">-->
+                <!--</div>-->
+                <!--<div class="rightbox">-->
+                    <!--<div class="bankname">工商银行储蓄卡</div>-->
+                    <!--<p class="peoplename">**宇</p>-->
+                    <!--<div class="banknumber">-->
+                        <!--<small>****</small>-->
+                        <!--<small>****</small>-->
+                        <!--<small>****</small>-->
+                        <!--<span>3847</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="pointer">更换<span></span></div>-->
+            </div>
+
+            <div class="clearfix cell">
+                <p class="fl">手机号</p>
+                <p id="phoneNum" class="fr">138****9480</p>
+            </div>
+
+            <div class="clearfix cell verify">
+                <label>验证码</label>
+                <input type="text" placeholder="请输入短信验证码">
+                <button class="btn getverify">获取验证码</button>
+            </div>
+        </form>
+    </section>
+    <footer>
+        <button id="pay" class="btn payfor" data-pay="0" disabled>立即支付</button>
+    </footer>
+
+</article>
+
+<script src="lib/zepto.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>

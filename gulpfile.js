@@ -1,7 +1,7 @@
 var app = {  // 定义目录
-    srcPath:'src/myBank/',
-    buildPath:'build/myBank/',
-    distPath:'dist/myBank/'
+    srcPath:'src/pay/',
+    buildPath:'build/pay/',
+    distPath:'dist/pay/'
 }
 
 /*1.引入gulp与gulp插件   使用时，要去下载这些插件*/
@@ -11,6 +11,7 @@ var cssmin = require('gulp-cssmin');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 var connect = require('gulp-connect');
+var Proxy = require('http-proxy-middleware');
 var imagemin = require('gulp-imagemin');
 var open = require('open');
 var postcss = require('gulp-postcss');
@@ -95,7 +96,20 @@ gulp.task('server',['build'],function () {
     connect.server({
         root:[app.buildPath],//要运行哪个目录
         livereload:true,  //是否热更新。
-        port:9966  //端口号
+        port:9966,//端口号
+        middleware: function(connect, opt) {
+            return [
+                Proxy('/test',  {
+                    target: 'http://10.0.20.50:5004/api',
+                    changeOrigin:true
+                }),
+                Proxy('/api',  {
+                    target: 'http://beta-pay.healthmall.cn',
+                    changeOrigin:true
+                })
+
+            ]
+        }
     })
     /*监听哪些任务*/
     gulp.watch('bower_components/**/*',['lib']);

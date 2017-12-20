@@ -17,6 +17,7 @@
     "connect-livereload": "^0.6.0",
     "grunt-contrib-watch": "^1.0.0",
     "gulp-postcss": "^7.0.0",
+    "http-proxy-middleware": "^0.17.4",
     "postcss-px2rem": "^0.3.0"
   },
   "scripts": {
