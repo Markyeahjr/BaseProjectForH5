@@ -158,7 +158,7 @@
                     '</div>' +
                     '</li>';
                 var img=new Image();
-                var src= '../images/card_'+bgArr[data[i].type-1]+'.png';
+                var src= 'images/card_'+bgArr[data[i].type-1]+'.png';
                 img.src=src;
                 img.onload=function(){
                     loadImageNum+=1;
@@ -172,7 +172,7 @@
                             var card = $(cardList[i]);
                             var cardtype = card.attr('data-type');
                             var cardIndex = card.index();
-                            var src= '../images/card_'+bgArr[cardtype-1]+'.png';
+                            var src= 'images/card_'+bgArr[cardtype-1]+'.png';
 
                             card.css({'backgroundImage': 'url('+src+')','top': (cardIndex*107/37.5) + 'rem'});
 

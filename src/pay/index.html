@@ -27,8 +27,10 @@
     <meta name="msapplication-tap-highlight" content="no">
     <!-- 适应移动端end -->
     <title></title>
+    <link rel="stylesheet" href="../common/css/index.css">
     <link rel="stylesheet" href="css/index.css">
-    <script src="lib/flexible.js"></script>
+    <!--<script src="lib/flexible.js"></script>-->
+    <script src="http://h5-beta-cdn.healthmall.cn/common/flexible.js"></script>
 </head>
 <body>
 <article id="container" class="container">
@@ -49,7 +51,7 @@
                 <ul>
                     <li class="clearfix cell cur">
                         <label>银行卡</label>
-                        <input type="number" name="bankNumber" placeholder="请输入本人的银行卡" required>
+                        <input type="number" name="bankNumber" pattern="[0-9]*" placeholder="请输入本人的银行卡" required>
                     </li>
                     <li class="clearfix cell">
                         <label>持卡人</label>
@@ -60,13 +62,13 @@
                         <input type="text" name="cardId" placeholder="请输入持卡人身份证号"
                                onkeyup="value=value.toUpperCase().replace(/[^0-9\X]/g,'')" required>
                     </li>
-                    <li class="clearfix cell">
+                    <li class="clearfix cell notlianlian">
                         <label>手机号</label>
-                        <input type="number" name="phone" placeholder="请输入银行卡预留手机号" required>
+                        <input type="number" pattern="[0-9]*" name="phone" placeholder="请输入银行卡预留手机号" required>
                     </li>
-                    <li class="clearfix cell verify">
+                    <li class="clearfix cell verify notlianlian">
                         <label>验证码</label>
-                        <input type="number" placeholder="请输入短信验证码">
+                        <input type="number" pattern="[0-9]*" placeholder="请输入短信验证码">
                         <button class="btn getverify" disabled>获取验证码</button>
                     </li>
                 </ul>
@@ -151,7 +153,15 @@
 
 </article>
 
-<script src="lib/zepto.js"></script>
+<!--<script src="lib/zepto.js"></script>-->
+<script src="http://h5-beta-cdn.healthmall.cn/common/zepto.min.js"></script>
+<script src="http://h5-beta-cdn.healthmall.cn/common/fastclick.min.js"></script>
+<script>
+    window.addEventListener( "load", function() {
+        FastClick.attach( document.body );
+    }, false );
+</script>
+<!--<script src="../common/js/index.js"></script>-->
 <script src="js/index.js"></script>
 </body>
 </html>

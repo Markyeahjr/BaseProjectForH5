@@ -1,7 +1,7 @@
 var app = {  // 定义目录
-    srcPath:'src/pay/',
-    buildPath:'build/pay/',
-    distPath:'dist/pay/'
+    srcPath:'src/',
+    buildPath:'build/',
+    distPath:'dist/'
 }
 
 /*1.引入gulp与gulp插件   使用时，要去下载这些插件*/
@@ -14,6 +14,15 @@ var connect = require('gulp-connect');
 var Proxy = require('http-proxy-middleware');
 var imagemin = require('gulp-imagemin');
 var open = require('open');
+var htmlmin = require('gulp-htmlmin');
+//重命名
+var rename = require('gulp-rename');
+//清除旧文件夹
+var clean = require('gulp-clean');
+//生成zip文件
+var zip = require('gulp-zip');
+//同步执行任务
+var runSequence = require('run-sequence');
 var postcss = require('gulp-postcss');
 var px2rem = require('postcss-px2rem');
 
@@ -34,13 +43,24 @@ gulp.task('lib',function () {
 
 
 /*2.定义任务 把所有html文件移动另一个位置*/
-gulp.task('html',function () {
-    /*要操作哪些文件 确定源文件地址*/
-    gulp.src(app.srcPath+'**/*.html')  /*src下所有目录下的所有.html文件*/
-        .pipe(gulp.dest(app.buildPath)) //gulp.dest 要把文件放到指定的目标位置
-        .pipe(gulp.dest(app.distPath))
-        .pipe(connect.reload()); //当内容发生改变时， 重新加载。
+gulp.task('html', function () {
+    var options = {
+        removeComments: true,//清除HTML注释
+        collapseWhitespace: true,//压缩HTML
+        collapseBooleanAttributes: true,//省略布尔属性的值 <input checked="true"/> ==> <input />
+        removeEmptyAttributes: true,//删除所有空格作属性值 <input id="" /> ==> <input />
+        removeScriptTypeAttributes: true,//删除<script>的type="text/javascript"
+        removeStyleLinkTypeAttributes: true,//删除<style>和<link>的type="text/css"
+        minifyJS: true,//压缩页面JS
+        minifyCSS: true//压缩页面CSS
+    };
+    gulp.src([app.srcPath+'index.html',app.srcPath+'**/index.html'])
+        .pipe(htmlmin(options))
+        .pipe(gulp.dest(app.distPath))//gulp.dest 要把文件放到指定的目标位置
+        .pipe(connect.reload())
+
 });
+
 /*3.执行任务 通过命令行。gulp 任务名称*/
 /*px转rem,暂不需要*/
 // gulp.task('pxtorem', function() {
@@ -54,38 +74,38 @@ gulp.task('html',function () {
  * 把less文件转成css放到build
  * */
 gulp.task('less',function () {
-    gulp.src(app.srcPath+'style/index.less')
+    gulp.src(app.srcPath+'**/css/index.less')
         .pipe(less())
-        .pipe(gulp.dest(app.buildPath+'css/'))
-        /*经过压缩，放到dist目录当中*/
+        .pipe(gulp.dest(app.buildPath))
         .pipe(cssmin())
-        .pipe(gulp.dest(app.distPath+'css/'))
-        .pipe(connect.reload())
+        .pipe(gulp.dest(app.distPath))
 });
 
 /*合并js*/
 gulp.task('js',function () {
-    gulp.src(app.srcPath+'js/**/*.js')
-        .pipe(concat('index.js'))
-        .pipe(gulp.dest(app.buildPath+'js/'))
+    gulp.src(app.srcPath+'**/js/*.js')
         .pipe(uglify())
-        .pipe(gulp.dest(app.distPath+'js'))
-        .pipe(connect.reload())
+        .pipe(gulp.dest(app.distPath))
 });
 
 /*压缩图片*/
 gulp.task('image',function () {
-    gulp.src(app.srcPath+'images/**/*')
-        .pipe(gulp.dest(app.buildPath+'images'))
+    gulp.src(app.srcPath+'**/images/**/*')
         .pipe(imagemin())
-        .pipe(gulp.dest(app.distPath+'images'))
+        .pipe(gulp.dest(app.distPath))
+});
+
+/*复制src*/
+gulp.task('copysrc',function () {
+    gulp.src([app.srcPath+'**','!**/css/*.less'])
+        .pipe(gulp.dest(app.buildPath))
         .pipe(connect.reload())
 });
 
 /*同时执行多个任务 [其它任务的名称]
  * 当前bulid时，会自动把数组当中的所有任务给执行了。
  * */
-gulp.task('build',['less','html','js','image','lib']);
+gulp.task('build',['copysrc','less']);
 
 
 /*定义server任务
@@ -112,19 +132,41 @@ gulp.task('server',['build'],function () {
         }
     })
     /*监听哪些任务*/
-    gulp.watch('bower_components/**/*',['lib']);
-    gulp.watch(app.srcPath+'**/*.html',['html']);
-    gulp.watch(app.srcPath+'js/**/*.js',['js']);
-    gulp.watch(app.srcPath+'images/**/*',['image']);
-    gulp.watch(app.srcPath+'style/**/*.less',['less']);
+    // gulp.watch('bower_components/**/*',['lib']);
+    gulp.watch(app.srcPath+'**/*.html',['copysrc']);
+    gulp.watch(app.srcPath+'*.html',['copysrc']);
+    gulp.watch(app.srcPath+'**/js/*.js',['copysrc']);
+    gulp.watch(app.srcPath+'**/images/**/*',['copysrc']);
+    gulp.watch(app.srcPath+'**/css/*.less',['less']);
 
     //通过浏览器把指定的地址 （192.168.60.36:9966）打开。
     open('http://localhost:9966');
+    // open('http://beta-payment.healthmall.cn:9966');
+});
+
+
+//删除旧文件夹
+gulp.task('clean', function () {
+    return gulp.src('*.zip')
+        .pipe(clean());
+});
+
+// 压缩文件
+gulp.task('zip', function () {
+    return gulp.src(['dist/**'])
+        .pipe(zip('HealthmallPayment.zip'))
+        .pipe(gulp.dest(''));
 });
 
 /*定义默认任务
  * 直接执行gulp 会调用的任务
  * */
 gulp.task('default',['server']);
+//发布
+gulp.task('dist',['clean', 'image', 'html', 'less', 'js', 'zip']);
+
+// gulp.task('dist', function () {
+//     runSequence('clean', 'less', 'html', 'js', 'image', 'zip');
+// });
 
 

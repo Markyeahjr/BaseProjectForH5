@@ -3,12 +3,28 @@
  */
 
 (function ($) {
+    //模拟 scrollTop 动画效果
+    function scroll(scrollTo, time) {
+        var scrollFrom = parseInt(document.body.scrollTop),
+            i = 0,
+            runEvery = 5;
+        scrollTo = parseInt(scrollTo);
+        time /= runEvery;
+        var interval = setInterval(function () {
+            i++;
+            document.body.scrollTop = (scrollTo - scrollFrom) / time * i + scrollFrom;
+            if (i >= time) {
+                clearInterval(interval);
+            }
+        }, runEvery);
+    }
+
     var payInfo = {
         whole: {
             'state': 0,
             'isBind': false,
-            'title': '快钱支付',
-            'payPattern': 'KuaiQianPay',
+            'title': '快捷支付',
+            'payPattern': 'KuaiJiePay',
             'money': '￥10000.00',
             'pt': '预约私教：陈大月、陈大月、陈小希、陈华宇、陈大钊、陈华、陈辰、陈晓月、陈大月、陈小希、陈华宇、陈大钊',
             'userToken': '654321',
@@ -36,81 +52,38 @@
             payInfo.getInitInfo();
 
 
+
+
             /************事件start***************/
+            //打开键盘不遮挡input
+            $("input").focus(function(){
+                var header_h = 200;
+                var num = $(this).offset().top-header_h;
+                console.log(num);
+                scroll(num,50);
+            });
             //切换
-            $('#container .tab-switch span').click(function () {
+            $('#container .tab-switch span').on('click',function () {
                 console.log('切换');
                 var index = $(this).index();
                 payInfo.formValidation($('.tab-content').eq(index).find('form'));
                 //tab切换
-                $(this).addClass('cur').siblings().removeClass('cur').parent().parent().find('.tab-content').eq(index).show().siblings('.tab-content').hide();
+                $(this).addClass('cur').siblings().removeClass('cur');
+                $('.tab-content').eq(index).show().siblings('.tab-content').hide();
                 //记录是储蓄卡还是信用卡
                 payInfo.whole.state = index;
-                $('#pay').attr('data-pay', index);
             });
 
             //支付按钮
-            $('#pay').click(function () {
-                var form;
-                var params = {};
-
-                //绑卡否?>储蓄卡还是信用卡?是否连连?
-                if (payInfo.whole.isBind) {//已绑卡
-                    form = $('#bindCardForm');
-                    var validCode = form.find('.verify input').val();
-                    params = {
-                        "payToken": payInfo.whole.payToken,
-                        "orderInfo": payInfo.whole.orderInfo,
-                        "validCode": validCode
-                    };
-                    console.log(params);
-
-                } else {//未绑卡
-                    if (payInfo.whole.state == 0) {//储蓄卡
-                        form = $('#depositCardForm');
-                    } else {
-                        form = $('#creditCardForm');
-                    }
-                    form.find('input:required').removeAttr('disabled');
-                    params = {
-                        'orderInfo': payInfo.whole.orderInfo,
-                        'bankType': payInfo.whole.state
-                    };
-                    $.extend(params, form.serializeJson());
-                    console.log(params);
-                    params = {
-                        "cardName": "测试",
-                        "cardId": "340827198512011810",
-                        "bankNumber": "4380880000000007",
-                        "phone": "13172549050",
-                        "validCode":  form.find('.verify input').val(),
-                        "bankType": payInfo.whole.state,
-                        "orderInfo": payInfo.whole.orderInfo
-                    };
-                    console.log(params);
-                    $.ajax({
-                        type: 'POST',
-                        contentType: "application/json",
-                        dataType: "json",
-                        url: '/api/deal/firstPay/' + payInfo.whole.payPattern,
-                        data: JSON.stringify(params),
-                        success: function (data) {
-                            if(data.responseCode == 10000){
-                                console.log(data.msg);
-                            } else {
-                                alert(data.msg);
-                            }
-                        }
-                    });
-                }
-            });
+            $('#pay').click(payInfo.payOrNext);
 
             //input失焦时验证表单
-            $('input').blur(function () {
+            $('input').on('blur',function (event) {
+                event.preventDefault();
                 payInfo.formValidation($(this).closest("form"));
             });
 
-            //获取验证码
+            //验证码
             payInfo.getVerifyCode();
 
             //信用卡有效期过滤器
@@ -128,7 +101,77 @@
 
         },
 
-        /**获取验证码**/
+        /**支付或者下一步**/
+        payOrNext: function () {
+            var form = $('#depositCardForm');
+            var params = {};
+
+            //连连支付
+            if (payInfo.whole.payPattern == 'LianLianPay') {
+                console.log('连连');
+
+                if (payInfo.whole.isBind) {
+                    console.log('go');
+                } else {
+                    console.log(form.serializeJson());
+                }
+                return;
+            }
+
+            //绑卡否?>储蓄卡还是信用卡?是否连连?
+            if (payInfo.whole.isBind) {//已绑卡
+                form = $('#bindCardForm');
+                var validCode = form.find('.verify input').val();
+                params = {
+                    "payToken": payInfo.whole.payToken,
+                    "orderInfo": payInfo.whole.orderInfo,
+                    "validCode": validCode
+                };
+                console.log(params);
+
+            } else {//未绑卡
+                if (payInfo.whole.state == 0) {//储蓄卡
+                    form = $('#depositCardForm');
+                } else {
+                    form = $('#creditCardForm');//信用卡
+                }
+                form.find('input:required').removeAttr('disabled');
+                params = {
+                    'orderInfo': payInfo.whole.orderInfo,
+                    'bankType': payInfo.whole.state
+                };
+                $.extend(params, form.serializeJson());
+                console.log(params);
+                params = {
+                    "cardName": "测试",
+                    "cardId": "340827198512011810",
+                    "bankNumber": "4380880000000007",
+                    "phone": "13172549050",
+                    "validCode":  form.find('.verify input').val(),
+                    "bankType": payInfo.whole.state,
+                    "orderInfo": payInfo.whole.orderInfo
+                };
+                console.log(params);
+
+
+                $.ajax({
+                    type: 'POST',
+                    contentType: "application/json",
+                    dataType: "json",
+                    url: '/api/deal/firstPay/' + payInfo.whole.payPattern,
+                    data: JSON.stringify(params),
+                    success: function (data) {
+                        if(data.responseCode == 10000){
+                            console.log(data.msg);
+                        } else {
+                            alert(data.msg);
+                        }
+                    }
+                });
+            }
+        },
+
+        /**验证码**/
         getVerifyCode: function () {
             $('.getverify').click(function () {
                 console.log('提交表单', $(this).closest("form").attr("id"));
@@ -204,7 +247,6 @@
                 }, 1000);
                 payInfo[formid].isSendVerify = true;//已发送验证码
             });
-
         },
 
         /**表单验证**/
@@ -212,18 +254,9 @@
             var inputArr = form.find('input:required');
             var formid = form.attr('id');
             var varifybtn = form.find('button');
-            var valid = false;
-            // inputArr.each(function (index, item) {
-            //     if (!!$(item).val()) {
-            //         console.log(index);
-            //         valid = true;
-            //     } else {
-            //         valid = false;
-            //         return;
-            //     }
-            // });
+            // var valid = false;
             var valid = inputArr.every(function (index,item) {
-                return $(item).val() != ''
+                return $(item).val() != '';
             });
 
             //发送验证码按钮是否可点击
@@ -254,79 +287,118 @@
                 url: '/test',
                 dataType: 'json',
                 success: function (data) {
+                    payInfo.shouInitInfo(data);
+
                     console.log(data);
-                    payInfo.whole.orderInfo = data.encryp;
-                    console.log(payInfo.whole);
-                    var orderInfo = $('#orderInfo');//订单详情
-                    var isWarp = $('#isWarp');//显示全部私教按钮
-                    var notBindCard = $('#notBindCard');//未绑卡界面
-                    // var fs = parseInt(getComputedStyle(window.document.documentElement)['font-size']);//根字体
-
-
-                    /**************拼接订单信息***************/
-                    //拼接title
-                    $('title').text(payInfo.whole.title);
-                    //订单金额
-                    orderInfo.find('h4').text(payInfo.whole.money);
-                    //预约私教
-                    isWarp.text(payInfo.whole.pt);
-                    //预约私教显示交互
-                    // isWarp.height()/fs>35/37.5
-                    if (payInfo.whole.pt.length > 19) {
-                        isWarp.addClass('nowarp').siblings('span').css('display', 'block');
-                        isWarp.siblings('span').click(function () {
-                            $(this).toggleClass('turnup').siblings('#isWarp').toggleClass('nowarp');
-                        });
-                    }
-
-                    /**************根据支付类型判断支持的支付方式***************/
-                    getSupportPayType(payInfo.whole.payPattern);
-
-                    function getSupportPayType(title) {
-                        if (title == 'BaoFuPay' || title == 'KuaiJiePay' || title == 'YiLianPay') {
-                            //切换按钮
-                            notBindCard.find('.tab-switch').show().siblings('.tab-alone').hide();
-                        } else {
-                            //单个按钮
-                            var payType = payInfo.whole.state == 0 ? '仅支持储蓄卡' : '仅支持信用卡';
-                            notBindCard.find('.tab-switch').hide().siblings('.tab-alone').text(payType).show().siblings('.tab-content').hide().eq(payInfo.whole.state).show();
-
-                        }
-                    }
-
-                    if (payInfo.whole.isBind) {
-                        $('#container .notbindcard').hide();
-                        $('#container .bindcard').show();
-                        payInfo.getDefoultCard();
-                        var str =
-                            '<div class="leftbox">' +
-                            '<img src="' + payInfo.whole.logo + '">' +
-                            '</div>' +
-                            '<div class="rightbox">' +
-                            '<div class="bankname">' + payInfo.whole.bankName + payInfo.whole.bankTyptName + '</div>' +
-                            '<p class="peoplename">' + payInfo.whole.name + '</p>' +
-                            '<div class="banknumber">' +
-                            '<small>****</small>' +
-                            '<small>****</small>' +
-                            '<small>****</small>' +
-                            '<span>' + payInfo.whole.shortBankNumber + '</span>' +
-                            '</div>' +
-                            '</div>' +
-                            '<div class="pointer">更换<span></span></div>';
-                        $('#card').append(str);
-                        $('#phoneNum').text(payInfo.whole.phone);
-
-                    } else {
-                        $('#container .notbindcard').show();
-                        $('#container .bindcard').hide();
-                    }
-                    $('#container').show();
+                    // if(data.responseCode == 10000){
+                    //     console.log(data.msg);
+                    //
+                    // } else {
+                    //     alert(data.msg);
+                    // }
                 }
             });
 
         },
+        shouInitInfo: function (data) {
+            console.log(data);
+            payInfo.whole.orderInfo = data.encryp;
+            console.log(payInfo.whole);
+            var orderInfo = $('#orderInfo');//订单详情
+            var isWarp = $('#isWarp');//显示全部私教按钮
+            var notBindCard = $('#notBindCard');//未绑卡界面
+            // var fs = parseInt(getComputedStyle(window.document.documentElement)['font-size']);//根字体
 
-        /**获取默认银行卡信息**/
+
+            /**************拼接订单信息***************/
+            //拼接title
+            $('title').text(payInfo.whole.title);
+            //订单金额
+            orderInfo.find('h4').text(payInfo.whole.money);
+            //预约私教
+            isWarp.text(payInfo.whole.pt);
+            //预约私教显示交互
+            // isWarp.height()/fs>35/37.5
+            if (payInfo.whole.pt.length > 19) {
+                isWarp.addClass('nowarp').siblings('span').css('display', 'block');
+                isWarp.siblings('span').click(function () {
+                    $(this).toggleClass('turnup').siblings('#isWarp').toggleClass('nowarp');
+                });
+            }
+
+            /**************根据支付类型判断支持的支付方式***************/
+            if (payInfo.whole.payPattern == 'BaoFuPay' || payInfo.whole.payPattern == 'KuaiJiePay' || payInfo.whole.payPattern == 'YiLianPay') {
+                //切换按钮
+                notBindCard.find('.tab-switch').show().siblings('.tab-alone').hide();
+            } else {
+                //单个按钮
+                var payType = payInfo.whole.state == 0 ? '仅支持储蓄卡' : '仅支持信用卡';
+                notBindCard.find('.tab-switch').hide().siblings('.tab-alone').text(payType).show().siblings('.tab-content').hide().eq(payInfo.whole.state).show();
+                //连连未绑卡支付
+                if (payInfo.whole.payPattern == 'LianLianPay') {
+                    notBindCard.find('#depositCardForm .notlianlian').remove();
+                    $('#pay').text('下一步');
+                    payInfo.depositCardForm.isAllowPay = true;
+                }
+
+            }
+            // getSupportPayType(payInfo.whole.payPattern);
+            // function getSupportPayType(title) {
+            //     if (title == 'BaoFuPay' || title == 'KuaiJiePay' || title == 'YiLianPay') {
+            //         //切换按钮
+            //         notBindCard.find('.tab-switch').show().siblings('.tab-alone').hide();
+            //     } else {
+            //         //单个按钮
+            //         var payType = payInfo.whole.state == 0 ? '仅支持储蓄卡' : '仅支持信用卡';
+            //         notBindCard.find('.tab-switch').hide().siblings('.tab-alone').text(payType).show().siblings('.tab-content').hide().eq(payInfo.whole.state).show();
+            //
+            //         //连连未绑卡支付
+            //         if (title == 'LianLianPay') {
+            //             notBindCard.find('#depositCardForm .notlianlian').remove();
+            //
+            //             $('#pay').text('下一步');
+            //             payInfo.depositCardForm.isAllowPay = true;
+            //         }
+            //
+            //     }
+            // }
+
+
+            /**************根据是否已绑卡切换页面***************/
+            if (payInfo.whole.isBind) {
+                $('#container .notbindcard').hide();
+                $('#container .bindcard').show();
+                payInfo.getDefoultCard();
+                var str =
+                    '<div class="leftbox">' +
+                    '<img src="' + payInfo.whole.logo + '">' +
+                    '</div>' +
+                    '<div class="rightbox">' +
+                    '<div class="bankname">' + payInfo.whole.bankName + payInfo.whole.bankTyptName + '</div>' +
+                    '<p class="peoplename">' + payInfo.whole.name + '</p>' +
+                    '<div class="banknumber">' +
+                    '<small>****</small>' +
+                    '<small>****</small>' +
+                    '<small>****</small>' +
+                    '<span>' + payInfo.whole.shortBankNumber + '</span>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="pointer">更换<span></span></div>';
+                $('#card').append(str);
+                $('#phoneNum').text(payInfo.whole.phone);
+                if (payInfo.whole.payPattern == 'LianLianPay') {
+                    $('#bindCardForm .verify').hide()
+                    $('#pay').removeAttr('disabled');
+                }
+
+            } else {
+                $('#container .notbindcard').show();
+                $('#container .bindcard').hide();
+            }
+            $('#container').show();
+        },
+
+        /**已绑卡获取默认银行卡信息**/
         getDefoultCard: function () {
             var params = {
                 'payOrgan': payInfo.whole.title,
@@ -357,7 +429,7 @@
         });
         return serializeObj;
     };
-
+    //扩展every方法
     $.fn.every = function(callback) {
         var result = true;
         var self = this;

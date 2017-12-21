@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!-- 删除苹果默认的工具栏和菜单栏 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <!-- 设置苹果工具栏颜色 -->
+    <!-- 启用360浏览器的极速模式(webkit) -->
+    <meta name="renderer" content="webkit">
+    <!-- 避免IE使用兼容模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->
+    <meta name="HandheldFriendly" content="true">
+    <!-- 微软的老式浏览器 -->
+    <meta name="MobileOptimized" content="320">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+    <!-- UC应用模式 -->
+    <meta name="browsermode" content="application">
+    <!-- QQ应用模式 -->
+    <meta name="x5-page-mode" content="app">
+    <!-- windows phone 点击无高光 -->
+    <meta name="msapplication-tap-highlight" content="no">
+    <title></title>
+</head>
+
+<body>
+<div id="a" style="text-align: center;line-height: 200px;color: #F91150;font-weight: bold;">欢迎进入健康猫支付api H5项目！！！</div>
+<script src="https://h5-beta-cdn.healthmall.cn/src/js/zepto.min.js"></script>
+<script src="https://h5-beta-cdn.healthmall.cn/dist/jkmWebviewjavascript.js"></script>
+<script>
+    AppInteraction.setThePageLoading({
+        "loading": true
+    });
+    setTimeout(function () {
+        AppInteraction.setThePageLoading({
+            "loading": false
+        });
+    }, 3000);
+
+    $("#a").click(function () {
+        AppInteraction.startViewToShow({
+            "url": "https://beta-payment.healthmall.cn/pay",
+            "isNotifyResult": false,
+            "style": 1,
+            "isLoading": true
+        });
+    })
+</script>
+</body>
+
+</html>

@@ -27,8 +27,10 @@
     <meta name="msapplication-tap-highlight" content="no">
     <!-- 适应移动端end -->
     <title>我的银行</title>
+    <link rel="stylesheet" href="../common/css/index.css">
     <link rel="stylesheet" href="css/index.css">
-    <script src="lib/flexible.js"></script>
+    <!--<script src="lib/flexible.js"></script>-->
+    <script src="http://h5-beta-cdn.healthmall.cn/common/flexible.js"></script>
 </head>
 <body>
 <article id="container" class="container finish">
@@ -60,7 +62,14 @@
 </article>
 <button id="edit" style="position:fixed; top: 0;font-size: 0.5rem">编辑</button>
 
-<script src="lib/zepto.js"></script>
+<!--<script src="lib/zepto.js"></script>-->
+<script src="http://h5-beta-cdn.healthmall.cn/common/zepto.min.js"></script>
+<script src="http://h5-beta-cdn.healthmall.cn/common/fastclick.min.js"></script>
+<script>
+    window.addEventListener( "load", function() {
+        FastClick.attach( document.body );
+    }, false );
+</script>
 <script src="js/index.js"></script>
 </body>
 </html>
